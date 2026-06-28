@@ -18,6 +18,12 @@ export class UserEntity {
   @IsNotEmpty({ message: 'Name darf nicht leer sein' })
   name: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  resetToken?: string | null;
+
+  @Column({ type: 'datetime', nullable: true })
+  resetTokenExpiry?: Date | null;
+
   @CreateDateColumn()
   createdAt: Date;
 
