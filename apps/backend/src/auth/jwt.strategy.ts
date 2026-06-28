@@ -16,10 +16,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!jwtSecret) {
       const nodeEnv = config.get<string>('NODE_ENV') || process.env.NODE_ENV;
       if (nodeEnv === 'production') {
-        throw new Error('JWT_SECRET environment variable is missing in production!');
+        throw new Error(
+          'JWT_SECRET environment variable is missing in production!',
+        );
       }
       console.warn(
-        'WARNING: JWT_SECRET is not configured. Generating an ephemeral secret for development/testing.'
+        'WARNING: JWT_SECRET is not configured. Generating an ephemeral secret for development/testing.',
       );
       jwtSecret = randomBytes(32).toString('hex');
     }
