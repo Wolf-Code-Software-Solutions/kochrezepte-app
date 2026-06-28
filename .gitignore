@@ -4,3 +4,7 @@ build
 .env
 *.sqlite*
 .DS_Store
+coverage/
+.eslintcache
+.vscode/
+.idea/
