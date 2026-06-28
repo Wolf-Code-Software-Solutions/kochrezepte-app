@@ -72,6 +72,7 @@ describe('AuthLoginService', () => {
 
   it('rejects an unknown user with a generic unauthorized error', async () => {
     userRepository.findOne.mockResolvedValue(null);
+    hashService.compare.mockResolvedValue(false);
 
     await expect(
       service.login('missing@koch.de', 'password123'),
@@ -80,8 +81,24 @@ describe('AuthLoginService', () => {
       message: 'Ungültige Zugangsdaten',
     });
 
-    expect(hashService.compare).not.toHaveBeenCalled();
+    // Timing-Attack-Schutz: compare wird auch bei nicht-existentem User aufgerufen
+    expect(hashService.compare).toHaveBeenCalled();
     expect(jwtService.signAsync).not.toHaveBeenCalled();
+  });
+
+  it('always calls bcrypt.compare to prevent timing attacks (even for missing users)', async () => {
+    userRepository.findOne.mockResolvedValue(null);
+    hashService.compare.mockResolvedValue(false);
+
+    await expect(
+      service.login('missing@koch.de', 'password123'),
+    ).rejects.toThrow();
+
+    // bcrypt.compare wird mit dem Dummy-Hash aufgerufen wenn kein User existiert
+    expect(hashService.compare).toHaveBeenCalledWith(
+      'password123',
+      '$2b$10$dG2k2h7Lq0k8FqT3z6Y5rOvVxRjMmNnKpPcQwErTyUiOpAsDf',
+    );
   });
 
   it('rejects a wrong password with a generic unauthorized error', async () => {

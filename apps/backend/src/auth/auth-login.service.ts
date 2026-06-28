@@ -17,15 +17,17 @@ export class AuthLoginService {
 
   async login(email: string, password: string): Promise<LoginResponseDto> {
     const user = await this.userRepository.findOne({ where: { email } });
-    if (!user) {
-      throw new UnauthorizedException('Ungültige Zugangsdaten');
-    }
 
+    // Timing-Attack-Schutz: bcrypt.compare wird IMMER aufgerufen - auch wenn
+    // kein User existiert. So kann ein Angreifer nicht per Antwortzeit messen,
+    // ob eine E-Mail registriert ist oder nicht.
+    const dummyHash = '$2b$10$dG2k2h7Lq0k8FqT3z6Y5rOvVxRjMmNnKpPcQwErTyUiOpAsDf'; // Dummy bcrypt hash (nicht im System)
     const passwordMatches = await this.hashService.compare(
       password,
-      user.passwordHash,
+      user?.passwordHash ?? dummyHash,
     );
-    if (!passwordMatches) {
+
+    if (!user || !passwordMatches) {
       throw new UnauthorizedException('Ungültige Zugangsdaten');
     }
 
