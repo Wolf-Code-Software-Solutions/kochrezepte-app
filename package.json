@@ -9,6 +9,7 @@
     "dev:backend": "npm run start:dev -w apps/backend",
     "dev:frontend": "npm run dev -w apps/frontend",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "prebuild": "npm run build -w packages/shared",
     "build": "npm run build --workspaces"
   },
   "devDependencies": {
