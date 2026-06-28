@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
         type: 'better-sqlite3',
         database: configService.get<string>('DATABASE_PATH', ':memory:'),
+        autoLoadEntities: true,
         synchronize: configService.get<string>('NODE_ENV') !== 'production',
         logging: false,
       }),
