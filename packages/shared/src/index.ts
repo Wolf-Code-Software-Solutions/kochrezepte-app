@@ -7,11 +7,14 @@ export interface LoginResponse {
   access_token: string;
 }
 
-export enum Difficulty {
-  EASY = 'easy',
-  MEDIUM = 'medium',
-  HARD = 'hard',
-}
+/** Difficulty levels for recipes */
+export const Difficulty = {
+  EASY: 'easy',
+  MEDIUM: 'medium',
+  HARD: 'hard',
+} as const;
+
+export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty];
 
 export interface Ingredient {
   name: string;
@@ -24,7 +27,8 @@ export interface RecipeDTO {
   description?: string;
   ingredients: Ingredient[];
   steps: string[];
-  cookingTime: number;
+  /** Cooking time in minutes */
+  cookingTimeInMinutes: number;
   difficulty: Difficulty;
   imageUrl?: string;
   userId: string;
@@ -35,7 +39,8 @@ export interface CreateRecipeDTO {
   description?: string;
   ingredients: Ingredient[];
   steps: string[];
-  cookingTime: number;
+  /** Cooking time in minutes */
+  cookingTimeInMinutes: number;
   difficulty: Difficulty;
 }
 
