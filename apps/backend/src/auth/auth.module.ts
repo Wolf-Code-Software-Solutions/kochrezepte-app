@@ -9,6 +9,8 @@ import { AuthLoginService } from './auth-login.service';
 import { HashService } from './hash.service';
 import { getJwtSecret } from './jwt-secret';
 import { JwtStrategy } from './jwt.strategy';
+import { AuthResetController } from './auth-reset.controller';
+import { AuthResetService } from './auth-reset.service';
 
 @Module({
   imports: [
@@ -22,8 +24,8 @@ import { JwtStrategy } from './jwt.strategy';
       }),
     }),
   ],
-  controllers: [AuthLoginController],
-  providers: [HashService, JwtStrategy, AuthLoginService],
+  controllers: [AuthLoginController, AuthResetController],
+  providers: [HashService, JwtStrategy, AuthLoginService, AuthResetService],
   exports: [HashService, JwtModule, JwtStrategy, AuthLoginService],
 })
 export class AuthModule {}
