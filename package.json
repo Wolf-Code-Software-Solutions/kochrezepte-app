@@ -10,7 +10,8 @@
     "dev:frontend": "npm run dev -w apps/frontend",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "prebuild": "npm run build -w packages/shared",
-    "build": "npm run build --workspaces"
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
