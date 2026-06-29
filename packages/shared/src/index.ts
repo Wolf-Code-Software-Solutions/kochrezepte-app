@@ -18,7 +18,8 @@ export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty];
 
 export interface Ingredient {
   name: string;
-  amount: string;
+  /** Menge (optional, z.B. "Salz nach Geschmack" hat keine) */
+  amount?: string;
 }
 
 export interface RecipeDTO {
